@@ -1,0 +1,38 @@
+@import 'base';
+@import 'variables';
+
+@import url('https://fonts.googleapis.com/css?family=ZCOOL+QingKe+HuangYou');
+
+* {
+    font-family: 'ZCOOL QingKe HuangYou', cursive;
+    font-size: 18px;
+    margin: 0.8rem 0;
+}
+
+body {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+button {
+    padding: 1rem 1.8rem;
+    background: $btn-color;
+    color: #fff;
+    border: 0;
+    cursor: pointer;
+    clip-path: polygon(8% 0, 100% 0, 92% 100%, 0% 100%);
+
+    transition: background-color ease-in-out 200ms;
+
+    &:hover {
+        background: darken($btn-color, 10%);
+    }
+
+    &:focus {
+        outline: 0;
+    }
+}
