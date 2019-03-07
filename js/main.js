@@ -3,15 +3,19 @@ let p;
 let border;
 
 let assets = [];
+let textures = [];
+
+let player;
 
 function preload() {
     assets.push(loadJSON('/assets/polygons/rect.json'));
+    textures.push(loadImage('/assets/image/bird-sprite.png'));
 }
 
 function setup() {
     ShapesTheta = [0,0,0,PI/2,PI/4,PI/10,0,PI/2,PI/8,PI/2];
     ShapeColor = color(51);
-    createCanvas(400, 400);
+    createCanvas(800, 600);
     (createButton('Create new shape')).mousePressed(()=>{
         let shape = createShape(points);
         if (shape) shapes.push(shape);
@@ -30,6 +34,8 @@ function setup() {
     border.render();
 
     shapes.push(new Polygon(80, 80, assets[0]));
+
+    player = new Player(width/2, height*3/4, 120, new Spritesheet(textures[0], 5, 5, 3, 14), new Ngon(undefined, undefined, {width: 120}, 5), true);
 }
 
 function draw() {
@@ -44,6 +50,9 @@ function draw() {
 
     testAllCollisions(shapes);
     p.html('Number of collisions: ' + countCollisions);
+
+    player.update();
+    player.render();
 }
 
 function mousePressed() {
@@ -52,3 +61,17 @@ function mousePressed() {
         points.push(new Point(mouseX, mouseY));
     }
   }
+
+function keyPressed(e) {
+    let key = keyboardDict[e.keyCode];
+    if (key) {
+        keyboard[key] = true;
+    }
+}
+
+function keyReleased(e) {
+    let key = keyboardDict[e.keyCode];
+    if (key) {
+        keyboard[key] = false;
+    }
+}
