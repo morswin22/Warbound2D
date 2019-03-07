@@ -1,0 +1,50 @@
+@import url("https://fonts.googleapis.com/css?family=ZCOOL+QingKe+HuangYou");
+html, body {
+  padding: 0;
+  margin: 0;
+}
+
+* {
+  font-family: 'ZCOOL QingKe HuangYou', cursive;
+  font-size: 18px;
+  margin: 0.8rem 0;
+}
+
+body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+button {
+  padding: 1rem 1.8rem;
+  background: #f1ab5b;
+  color: #fff;
+  border: 0;
+  cursor: pointer;
+  -webkit-clip-path: polygon(8% 0, 100% 0, 92% 100%, 0% 100%);
+          clip-path: polygon(8% 0, 100% 0, 92% 100%, 0% 100%);
+  -webkit-transition: background-color ease-in-out 200ms;
+  transition: background-color ease-in-out 200ms;
+}
+
+button:hover {
+  background: #ed932c;
+}
+
+button:focus {
+  outline: 0;
+}
+/*# sourceMappingURL=polygon-generator.css.map */

@@ -6,6 +6,7 @@ let alwaysShowPoints = false;
 let Density = 1;
 
 let ShapesTheta; // ShapesTheta = [0,0,0,PI/2,PI/4,PI/10,0,PI/2,PI/8,PI/2];
+let ShapeColor;  // ShapeColor = color(0,0,0);
 
 let points = [];
 let shapes = [];
@@ -34,13 +35,18 @@ class Line {
 	constructor(point1, point2) {
         this.points = [point1, point2];
         this.func = new Func(this.points); // lines can be described as functions 
+        this.hasColor = false;
+    }
+
+    setColor(color) {
+        this.hasColor = color;
     }
   
     render() {
         for (let point of this.points) {
             point.render();
         }
-        stroke(51);
+        stroke(this.hasColor || ShapeColor);
         line(this.points[0].x, this.points[0].y, this.points[1].x, this.points[1].y);
     }
 }
@@ -61,9 +67,14 @@ class Func {
 class Shape {
 	constructor() {
         this.lines = [];
+        this.hasColor = false;
     }
     addLine(line) {
+        if (this.hasColor && !line.hasColor) line.setColor(this.hasColor);
         this.lines.push(line);
+    }
+    setColor(color) {
+        this.hasColor = color;
     }
     render() {
         for (let line of this.lines) {
@@ -106,6 +117,12 @@ class Ngon {
         // physics
         this.vel = createVector(0,0);
         this.acc = createVector(0,0);
+
+        // color update
+        this.hasColor = false;
+    }
+    setColor(color) {
+        this.hasColor = color;
     }
 
     applyForce(f) {
@@ -162,7 +179,7 @@ class Ngon {
             let y = this.y + sin(TWO_PI*n/this.n + this.angle + this.theta) * this.r;
             points.push(new Point(x, y));
         }
-        let shape = createShape(points);
+        let shape = createShape(points, (this.hasColor) ? this.hasColor : false);
         this.lines = shape.lines;
         shape.render();
     }
@@ -172,7 +189,12 @@ class Polygon {
     constructor(x,y,points) { // points are just offsets from x,y
         this.x = x;
         this.y = y;
-        this.points = points;
+        this.points = Object.values(points); // to make sure it works
+
+        this.hasColor = false;
+    }
+    setColor(color) {
+        this.hasColor = color;
     }
 
     render() {
@@ -180,7 +202,7 @@ class Polygon {
         for(let point of this.points) {
             points.push(new Point(this.x + point.x, this.y + point.y));
         }
-        let shape = createShape(points);
+        let shape = createShape(points, (this.hasColor) ? this.hasColor : undefined);
         this.lines = shape.lines;
         shape.render();
     }
@@ -195,17 +217,19 @@ function drawShapes() {
     }
 }
 
-function createShape(points) {
+function createShape(points, color) {
     if (points.length > 1) {
         if (points.length == 2) {
             // create a Line
             let shape = new Shape();
+            if (color) shape.setColor(color);
             points[0].hide = true; points[1].hide = true;
             shape.addLine(new Line(points[0], points[1]));
             return shape;
         } else {
             // create a Shape
             let shape = new Shape();
+            if (color) shape.setColor(color);
             for (let i in points) {
                 i = parseInt(i);
                 let j = 0;
