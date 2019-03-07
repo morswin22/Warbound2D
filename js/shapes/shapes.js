@@ -5,7 +5,7 @@ let alwaysShowPoints = false;
 
 let Density = 1;
 
-let ShapesTheta; // ShapesTheta = [0,0,0,PI/2,PI/4,PI/10,0,PI/2,PI/8,PI/2];
+let ShapesTheta = [0,0,0,Math.PI/2,Math.PI/4,Math.PI/10,0,Math.PI/2,Math.PI/8,Math.PI/2];; // ShapesTheta = [0,0,0,PI/2,PI/4,PI/10,0,PI/2,PI/8,PI/2];
 let ShapeColor;  // ShapeColor = color(0,0,0);
 
 let points = [];

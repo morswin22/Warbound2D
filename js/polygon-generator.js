@@ -10,7 +10,6 @@ let gridLines = [];
 let pointer;
 
 function setup() {
-    ShapesTheta = [0,0,0,PI/2,PI/4,PI/10,0,PI/2,PI/8,PI/2];
     ShapeColor = color(51);
     createCanvas(500, 500);
 

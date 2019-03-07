@@ -13,7 +13,6 @@ function preload() {
 }
 
 function setup() {
-    ShapesTheta = [0,0,0,PI/2,PI/4,PI/10,0,PI/2,PI/8,PI/2];
     ShapeColor = color(51);
     createCanvas(800, 600);
     (createButton('Create new shape')).mousePressed(()=>{
