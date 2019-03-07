@@ -1,6 +1,7 @@
 class Spritesheet {
     constructor (texture, Hz, wN, hN, n) {
         this.n = n || wN * hN;
+        n = this.n;
 
         this.texture = texture;
         this.w = texture.width / wN;
