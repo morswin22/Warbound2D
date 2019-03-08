@@ -10,6 +10,7 @@ let player;
 function preload() {
     assets.push(loadJSON('/assets/polygons/rect.json'));
     textures.push(loadImage('/assets/image/bird-sprite.png'));
+    textures.push(loadImage('/assets/image/bird-sprite2.png'));
 }
 
 function setup() {
@@ -34,7 +35,8 @@ function setup() {
 
     shapes.push(new Polygon(80, 80, assets[0]));
 
-    player = new Player(width/2, height*3/4, 120, new Spritesheet(textures[0], 5, 5, 3, 14), new Ngon(undefined, undefined, {width: 120}, 5), true);
+    // player = new Player(width/2, height*3/4, 120, new Spritesheet(textures[0], 5, 5, 3, 14), new Ngon(!!0, !!0, {width: 120}, 5), true);
+    player = new Player(width/2, height*3/4, 120, new Spritesheet(textures[1], 5, 4, 2), new Ngon(!!0, !!0, {width: 120}, 6), true);
 }
 
 function draw() {
