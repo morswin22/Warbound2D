@@ -76,6 +76,7 @@ class Shape {
     setColor(color) {
         this.hasColor = color;
     }
+    getLines() {} // Refactor this later;
     render() {
         for (let line of this.lines) {
             line.render();
@@ -172,6 +173,17 @@ class Ngon {
     //     this.force.mult(.98);
     // }
 
+    getLines() { // Refactor this later;
+        let points = [];
+        for (let n = 0; n<this.n; n++) {
+            let x = this.x + cos(TWO_PI*n/this.n + this.angle + this.theta) * this.r;
+            let y = this.y + sin(TWO_PI*n/this.n + this.angle + this.theta) * this.r;
+            points.push(new Point(x, y));
+        }
+        let shape = createShape(points, (this.hasColor) ? this.hasColor : false);
+        this.lines = shape.lines;
+    }
+
     render() {
         let points = [];
         for (let n = 0; n<this.n; n++) {
@@ -195,6 +207,15 @@ class Polygon {
     }
     setColor(color) {
         this.hasColor = color;
+    }
+
+    getLines() { // Refactor this later;
+        let points = [];
+        for(let point of this.points) {
+            points.push(new Point(this.x + point.x, this.y + point.y));
+        }
+        let shape = createShape(points, (this.hasColor) ? this.hasColor : undefined);
+        this.lines = shape.lines;
     }
 
     render() {
