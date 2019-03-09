@@ -2,6 +2,12 @@ let gridSize;
 let stickToGrid;
 let polygonName;
 
+let bg = false;
+let spritesheet = false;
+let backgroundImage;
+let isSpritesheet;
+let spritesheetData = {};
+
 let undoList = [];
 
 let shapePoints = [];
@@ -27,6 +33,47 @@ function setup() {
 
     polygonName = createInput('polygon-'+round(random(999999)), 'text');
 
+    backgroundImage = createFileInput(file=>{
+        let img = createImg(file.data, ()=>{
+            bg = createGraphics(img.width, img.height);
+            bg.image(img, 0, 0, bg.width, bg.height);
+        }).hide();
+    }, false);
+
+    isSpritesheet = createCheckbox('Is a spritesheet?', false);
+    isSpritesheet.changed(e=>{
+        if (isSpritesheet.checked()) {
+            for (let i in spritesheetData) spritesheetData[i].show();
+        } else {
+            for (let i in spritesheetData) spritesheetData[i].hide();
+        }
+    });
+
+    spritesheetData.hz = createInput('5', 'number').hide();
+    spritesheetData.nx = createInput('4', 'number').hide();
+    spritesheetData.ny = createInput('2', 'number').hide();
+    spritesheetData.n = createInput('8', 'number').hide();
+
+    spritesheetData.apply = createButton('Apply values').hide();
+    spritesheetData.apply.mousePressed(e=>{
+        if (bg) {
+            spritesheet = new Spritesheet(
+                bg, 
+                parseInt(spritesheetData.hz.value()), 
+                parseInt(spritesheetData.nx.value()), 
+                parseInt(spritesheetData.ny.value()), 
+                parseInt(spritesheetData.n.value())
+            );
+        }
+    });
+
+    const updateN = () => {
+        spritesheetData.n.value(parseInt(spritesheetData.nx.value()) * parseInt(spritesheetData.ny.value()));
+    }
+
+    spritesheetData.nx.changed(updateN);
+    spritesheetData.ny.changed(updateN);
+
     (createButton('Create new polygon')).mousePressed(()=>{
         let shape = createShape(points);
         if (shape) shapes.push(shape);
@@ -38,6 +85,13 @@ function setup() {
 
 function draw() {
     background(220);
+
+    if (spritesheet) {
+        spritesheet.render(width/2, height/2, 120,true);
+    } else if (bg) {
+        imageMode(CENTER);
+        image(bg, width/2, height/2);
+    }
 
     showGrid();
     fill(80,80,220);
