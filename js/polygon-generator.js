@@ -5,6 +5,7 @@ let polygonName;
 let bg = false;
 let spritesheet = false;
 let backgroundImage;
+let backgroundSize; // todo
 let isSpritesheet;
 let spritesheetData = {};
 
@@ -15,46 +16,71 @@ let shapePoints = [];
 let gridLines = [];
 let pointer;
 
+// css 
+let view = '#view';
+let controls = '#controls';
+let gridGroup = '#grid-control';
+let doGroup = '#undo-redo-control';
+let uploadGroup = '#upload-control';
+let sizeGroup = '#size-control';
+let spritesheetGroup = '#spritesheet-control';
+let downloadGroup = '#download-control';
+
+// todo:
+let uploadShape;
+
 function setup() {
     ShapeColor = color(51);
-    createCanvas(500, 500);
 
-    gridSize = createSlider(1, 20, 15, 1);
+    view = select(view);
+    controls = select(controls);
+    gridGroup = select(gridGroup);
+    doGroup = select(doGroup);
+    uploadGroup = select(uploadGroup);
+    sizeGroup = select(sizeGroup);
+    spritesheetGroup = select(spritesheetGroup);
+    downloadGroup = select(downloadGroup);
 
-    stickToGrid = createCheckbox('Stick to grid?', true);
+    let canvas = createCanvas(500, 500);
+    canvas.parent(view);
+    
+    stickToGrid = createCheckbox('Stick to grid?', true).parent(gridGroup);
 
-    (createButton('Undo')).mousePressed(()=>{
+    gridSize = createSlider(1, 20, 15, 1).parent(gridGroup);
+
+    (createButton('Undo')).parent(doGroup).mousePressed(()=>{
         if (points.length > 0) undoList.push(points.pop());
     });
 
-    (createButton('Redo')).mousePressed(()=>{
+    (createButton('Redo')).parent(doGroup).mousePressed(()=>{
         if (undoList.length > 0) points.push(undoList.pop());
     });
-
-    polygonName = createInput('polygon-'+round(random(999999)), 'text');
 
     backgroundImage = createFileInput(file=>{
         let img = createImg(file.data, ()=>{
             bg = createGraphics(img.width, img.height);
             bg.image(img, 0, 0, bg.width, bg.height);
         }).hide();
-    }, false);
+    }, false).parent(uploadGroup);
 
-    isSpritesheet = createCheckbox('Is a spritesheet?', false);
+    backgroundSize = createInput('', 'number').parent(sizeGroup);
+
+    isSpritesheet = createCheckbox('Is a spritesheet?', false).parent(spritesheetGroup);
     isSpritesheet.changed(e=>{
         if (isSpritesheet.checked()) {
             for (let i in spritesheetData) spritesheetData[i].show();
         } else {
             for (let i in spritesheetData) spritesheetData[i].hide();
+            spritesheet = false;
         }
     });
 
-    spritesheetData.hz = createInput('5', 'number').hide();
-    spritesheetData.nx = createInput('4', 'number').hide();
-    spritesheetData.ny = createInput('2', 'number').hide();
-    spritesheetData.n = createInput('8', 'number').hide();
+    spritesheetData.hz = createInput('5', 'number').hide().parent(spritesheetGroup);
+    spritesheetData.nx = createInput('4', 'number').hide().parent(spritesheetGroup);
+    spritesheetData.ny = createInput('2', 'number').hide().parent(spritesheetGroup);
+    spritesheetData.n = createInput('8', 'number').hide().parent(spritesheetGroup);
 
-    spritesheetData.apply = createButton('Apply values').hide();
+    spritesheetData.apply = createButton('Apply values').hide().parent(spritesheetGroup);
     spritesheetData.apply.mousePressed(e=>{
         if (bg) {
             spritesheet = new Spritesheet(
@@ -74,7 +100,9 @@ function setup() {
     spritesheetData.nx.changed(updateN);
     spritesheetData.ny.changed(updateN);
 
-    (createButton('Create new polygon')).mousePressed(()=>{
+    polygonName = createInput('polygon-'+round(random(999999)), 'text').parent(downloadGroup);
+
+    (createButton('Create new polygon')).parent(downloadGroup).mousePressed(()=>{
         let shape = createShape(points);
         if (shape) shapes.push(shape);
         shapePoints = points;
@@ -87,10 +115,15 @@ function draw() {
     background(220);
 
     if (spritesheet) {
-        spritesheet.render(width/2, height/2, 120,true);
+        spritesheet.render(width/2, height/2, parseInt(backgroundSize.value()),true);
     } else if (bg) {
         imageMode(CENTER);
-        image(bg, width/2, height/2);
+        if (backgroundSize.value() == "") {
+            image(bg, width/2, height/2);
+        } else {
+            image(bg, width/2, height/2, parseInt(backgroundSize.value()), bg.height/bg.width * parseInt(backgroundSize.value()));
+        }
+         // todo add backgroundSize.value() manipulation
     }
 
     showGrid();

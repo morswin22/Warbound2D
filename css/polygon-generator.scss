@@ -1,1 +1,93 @@
 @import "main";
+
+body {
+    display: grid;
+    grid-template-areas:
+        "header"
+        "view"
+        "controls";
+    grid-template-rows: 50px 500px;
+}
+
+h1 {
+    grid-area: header;
+    text-align: center;
+}
+
+#view {
+    grid-area: view;
+    justify-self: center;
+}
+
+#controls {
+    grid-area: controls;
+    display: grid;
+    grid-template-areas: 
+        "grid-control grid-control"
+        "undo-redo-control undo-redo-control"
+        "upload-control size-control"
+        "upload-control spritesheet-control"
+        "download-control download-control";
+
+    div {
+        margin: 0;
+    }
+
+    #grid-control {
+        grid-area: grid-control;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
+
+    #undo-redo-control {
+        grid-area: undo-redo-control;
+    }
+
+    #upload-control {
+        grid-area: upload-control;
+        position: relative;
+        justify-self: center;
+
+        input[type=file] {
+            position: absolute;
+            top: 0;
+            width: 200px;
+            height: 100%;
+            opacity: 0;
+            margin: 0;
+        }
+
+        & > div {
+            width: 200px;
+            height: 100%;
+            border: 1px solid #616161;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
+    #size-control {
+        grid-area: size-control;
+    }
+
+    #spritesheet-control {
+        grid-area: spritesheet-control;
+    }
+
+    #download-control {
+        grid-area: download-control;
+    }
+
+    #undo-redo-control, #download-control {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+
+        * {
+            margin: 1em;
+        }
+    }
+}

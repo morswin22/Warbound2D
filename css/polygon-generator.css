@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=ZCOOL+QingKe+HuangYou");
 html, body {
-  padding: 0;
-  margin: 0;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
 * {
@@ -46,5 +46,136 @@ button:hover {
 
 button:focus {
   outline: 0;
+}
+
+body {
+  display: -ms-grid;
+  display: grid;
+      grid-template-areas: "header" "view" "controls";
+  -ms-grid-rows: 50px 500px;
+      grid-template-rows: 50px 500px;
+}
+
+h1 {
+  -ms-grid-row: 1;
+  -ms-grid-column: 1;
+  grid-area: header;
+  text-align: center;
+}
+
+#view {
+  -ms-grid-row: 2;
+  -ms-grid-column: 1;
+  grid-area: view;
+  -ms-grid-column-align: center;
+      justify-self: center;
+}
+
+#controls {
+  -ms-grid-row: 3;
+  -ms-grid-column: 1;
+  grid-area: controls;
+  display: -ms-grid;
+  display: grid;
+      grid-template-areas: "grid-control grid-control" "undo-redo-control undo-redo-control" "upload-control size-control" "upload-control spritesheet-control" "download-control download-control";
+}
+
+#controls div {
+  margin: 0;
+}
+
+#controls #grid-control {
+  -ms-grid-row: 1;
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 2;
+  grid-area: grid-control;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+}
+
+#controls #undo-redo-control {
+  -ms-grid-row: 2;
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 2;
+  grid-area: undo-redo-control;
+}
+
+#controls #upload-control {
+  -ms-grid-row: 3;
+  -ms-grid-row-span: 2;
+  -ms-grid-column: 1;
+  grid-area: upload-control;
+  position: relative;
+  -ms-grid-column-align: center;
+      justify-self: center;
+}
+
+#controls #upload-control input[type=file] {
+  position: absolute;
+  top: 0;
+  width: 200px;
+  height: 100%;
+  opacity: 0;
+  margin: 0;
+}
+
+#controls #upload-control > div {
+  width: 200px;
+  height: 100%;
+  border: 1px solid #616161;
+  border-radius: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#controls #size-control {
+  -ms-grid-row: 3;
+  -ms-grid-column: 2;
+  grid-area: size-control;
+}
+
+#controls #spritesheet-control {
+  -ms-grid-row: 4;
+  -ms-grid-column: 2;
+  grid-area: spritesheet-control;
+}
+
+#controls #download-control {
+  -ms-grid-row: 5;
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 2;
+  grid-area: download-control;
+}
+
+#controls #undo-redo-control, #controls #download-control {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+#controls #undo-redo-control *, #controls #download-control * {
+  margin: 1em;
 }
 /*# sourceMappingURL=polygon-generator.css.map */

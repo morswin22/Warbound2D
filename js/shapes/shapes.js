@@ -227,6 +227,8 @@ class Polygon {
         this.lines = shape.lines;
         shape.render();
     }
+
+    // todo, create funciton to reverse points locations
 }
 
 function drawShapes() {
