@@ -147,31 +147,6 @@ class Ngon {
 
         // console.log(this.vel.x);
     }
-    //     // physics
-    //     this.force = createVector(0,0);
-    //     this.area = n * a**2 / ( 4 * tan(PI/n) );
-    //     this.mass = this.area * Density;
-    //     this.velocity = createVector(0,0);
-    //     this.acceleration = createVector(0,0);
-    // }
-
-    // applyForce(f) {
-    //     this.force.add(f);
-    // }
-
-    // applyAcceleration(acc) {
-    //     this.force = createVector(acc.x * this.mass, acc.y * this.mass);
-    // }
-
-    // update() {
-    //     let pos = createVector(this.x, this.y);
-    //     pos.add(this.velocity);
-    //     this.x = pos.x; this.y = pos.y;
-    //     this.velocity.add(this.acceleration);
-    //     this.acceleration = createVector(this.force.x / this.mass, this.force.y / this.mass);
-
-    //     this.force.mult(.98);
-    // }
 
     getLines() { // Refactor this later;
         let points = [];
