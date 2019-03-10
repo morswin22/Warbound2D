@@ -1,5 +1,7 @@
 @import "main";
 
+$radius: 10px;
+
 body {
     display: grid;
     grid-template-areas:
@@ -56,13 +58,15 @@ h1 {
             height: 100%;
             opacity: 0;
             margin: 0;
+            cursor: pointer;
         }
 
         & > div {
             width: 200px;
             height: 100%;
-            border: 1px solid #616161;
-            border-radius: 10px;
+            border: 1px solid $border-color;
+            box-sizing: border-box;
+            border-radius: $radius;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -71,14 +75,43 @@ h1 {
 
     #size-control {
         grid-area: size-control;
+
+        input {
+            text-align: center;
+            margin-top: 0;
+            box-sizing: border-box;
+            outline: none;
+            border: 1px solid $border-color;
+            border-radius: $radius;
+            display: block;
+        }
     }
 
     #spritesheet-control {
         grid-area: spritesheet-control;
+
+        input {
+            text-align: center;
+            margin-top: 0;
+            box-sizing: border-box;
+            outline: none;
+            border: 1px solid $border-color;
+            border-radius: $radius;
+        }
     }
 
     #download-control {
         grid-area: download-control;
+
+        input {
+            text-align: center;
+            width: 200px;
+            box-sizing: border-box;
+            outline: none;
+            border: 1px solid $border-color;
+            border-radius: $radius;
+            margin-right: 10px;
+        }
     }
 
     #undo-redo-control, #download-control {

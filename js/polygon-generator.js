@@ -5,7 +5,8 @@ let polygonName;
 let bg = false;
 let spritesheet = false;
 let backgroundImage;
-let backgroundSize; // todo
+let backgroundSizeWidth; 
+let backgroundSizeHeight;
 let isSpritesheet;
 let spritesheetData = {};
 
@@ -61,9 +62,12 @@ function setup() {
             bg = createGraphics(img.width, img.height);
             bg.image(img, 0, 0, bg.width, bg.height);
         }).hide();
-    }, false).parent(uploadGroup);
+    }).parent(uploadGroup);
 
-    backgroundSize = createInput('', 'number').parent(sizeGroup);
+    backgroundSizeWidth = createInput('', 'number').parent(sizeGroup);
+    backgroundSizeWidth.elt.placeholder = 'width';
+    backgroundSizeHeight = createInput('', 'number').parent(sizeGroup);
+    backgroundSizeHeight.elt.placeholder = 'height';
 
     isSpritesheet = createCheckbox('Is a spritesheet?', false).parent(spritesheetGroup);
     isSpritesheet.changed(e=>{
@@ -114,16 +118,31 @@ function setup() {
 function draw() {
     background(220);
 
-    if (spritesheet) {
-        spritesheet.render(width/2, height/2, parseInt(backgroundSize.value()),true);
-    } else if (bg) {
-        imageMode(CENTER);
-        if (backgroundSize.value() == "") {
-            image(bg, width/2, height/2);
+    if (spritesheet) { // size control
+
+        if (backgroundSizeWidth.value() == "" && backgroundSizeHeight.value() == "") {
+            spritesheet.render(width/2, height/2, {default: true},true);
+        } else if (backgroundSizeHeight.value() == "") {
+            spritesheet.render(width/2, height/2, {width: parseInt(backgroundSizeWidth.value())},true);
+        } else if (backgroundSizeWidth.value() == "") {
+            spritesheet.render(width/2, height/2, {height: parseInt(backgroundSizeHeight.value())},true);
         } else {
-            image(bg, width/2, height/2, parseInt(backgroundSize.value()), bg.height/bg.width * parseInt(backgroundSize.value()));
+            spritesheet.render(width/2, height/2, {width: parseInt(backgroundSizeWidth.value()), height: parseInt(backgroundSizeHeight.value())},true);
         }
-         // todo add backgroundSize.value() manipulation
+
+    } else if (bg) {
+
+        imageMode(CENTER);
+        if (backgroundSizeWidth.value() == "" && backgroundSizeHeight.value() == "") {
+            image(bg, width/2, height/2);
+        } else if (backgroundSizeHeight.value() == "") {
+            image(bg, width/2, height/2, parseInt(backgroundSizeWidth.value()), bg.height/bg.width * parseInt(backgroundSizeWidth.value()));
+        } else if (backgroundSizeWidth.value() == "") {
+            image(bg, width/2, height/2, bg.width/bg.height * parseInt(backgroundSizeHeight.value()), parseInt(backgroundSizeHeight.value()));
+        } else {
+            image(bg, width/2, height/2, parseInt(backgroundSizeWidth.value()), parseInt(backgroundSizeHeight.value()));
+        }
+
     }
 
     showGrid();

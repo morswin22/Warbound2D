@@ -10,6 +10,7 @@ let player;
 function preload() {
     assets.push(loadJSON('/assets/polygons/rect.json'));
     assets.push(loadJSON('/assets/polygons/BlueBird.json'));
+    assets.push(loadJSON('/assets/polygons/birdy.json'));
     textures.push(loadImage('/assets/image/bird-sprite.png'));
     textures.push(loadImage('/assets/image/bird-sprite2.png'));
 }
@@ -41,7 +42,7 @@ function setup() {
     PlayerDetectCollisionsWith.push(shapes);
 
     // player = new Player(width/2, height*3/4, 120, new Spritesheet(textures[1], 5, 4, 2), new Ngon(!!0, !!0, {width: 120}, 6), true);
-    player = new Player(width/2, height*3/4, 120, new Spritesheet(textures[1], 5, 4, 2), new Polygon(!!0, !!0, assets[1]), true);
+    player = new Player(width/2, height*3/4, 120, new Spritesheet(textures[1], 5, 4, 2), new Polygon(!!0, !!0, assets[2]), true);
 }
 
 function draw() {

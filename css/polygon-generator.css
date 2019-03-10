@@ -125,12 +125,15 @@ h1 {
   height: 100%;
   opacity: 0;
   margin: 0;
+  cursor: pointer;
 }
 
 #controls #upload-control > div {
   width: 200px;
   height: 100%;
-  border: 1px solid #616161;
+  border: 1px solid #a9a9a9;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   border-radius: 10px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -149,10 +152,31 @@ h1 {
   grid-area: size-control;
 }
 
+#controls #size-control input {
+  text-align: center;
+  margin-top: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  outline: none;
+  border: 1px solid #a9a9a9;
+  border-radius: 10px;
+  display: block;
+}
+
 #controls #spritesheet-control {
   -ms-grid-row: 4;
   -ms-grid-column: 2;
   grid-area: spritesheet-control;
+}
+
+#controls #spritesheet-control input {
+  text-align: center;
+  margin-top: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  outline: none;
+  border: 1px solid #a9a9a9;
+  border-radius: 10px;
 }
 
 #controls #download-control {
@@ -160,6 +184,17 @@ h1 {
   -ms-grid-column: 1;
   -ms-grid-column-span: 2;
   grid-area: download-control;
+}
+
+#controls #download-control input {
+  text-align: center;
+  width: 200px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  outline: none;
+  border: 1px solid #a9a9a9;
+  border-radius: 10px;
+  margin-right: 10px;
 }
 
 #controls #undo-redo-control, #controls #download-control {
