@@ -179,6 +179,12 @@ class Polygon {
         this.points = Object.values(points); // to make sure it works
 
         this.hasColor = false;
+
+        // flipping
+        this.originalPoints = this.points;
+        this.flippedCalculated = [];
+
+        this.calculateFlipped();
     }
     setColor(color) {
         this.hasColor = color;
@@ -191,16 +197,27 @@ class Polygon {
         }
         let shape = createShape(points, (this.hasColor) ? this.hasColor : undefined);
         this.lines = shape.lines;
+        return shape;
+    }
+
+    calculateFlipped() {
+        let points = [];
+        for(let point of this.points) {
+            points.push(new Point(-point.x, point.y));
+        }
+        this.flippedCalculated = points;
+    }
+
+    flip(dir) {
+        if (dir) { // this is right
+            this.points = this.originalPoints;
+        } else { // this is left
+            this.points = this.flippedCalculated;
+        }
     }
 
     render() {
-        let points = [];
-        for(let point of this.points) {
-            points.push(new Point(this.x + point.x, this.y + point.y));
-        }
-        let shape = createShape(points, (this.hasColor) ? this.hasColor : undefined);
-        this.lines = shape.lines;
-        shape.render();
+        this.getLines().render();
     }
 
     // todo, create funciton to reverse points locations

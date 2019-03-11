@@ -73,6 +73,7 @@ class Player {
         if (this.speed.x < 0) this.facingRight = false;
 
         this.texture.render(this.x, this.y, {width: this.size}, this.facingRight);
+        this.shape.flip(this.facingRight);
         if (showPlayerShape) this.shape.render();
     }
 }
