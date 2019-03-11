@@ -1,4 +1,5 @@
 let p;
+let fps;
 
 let border;
 
@@ -31,6 +32,7 @@ function setup() {
     shapes[0].setColor(color(80,220,80));
 
     p = createP();
+    fps = createP();
 
     border = new Polygon(0,0,[new Point(1,1),new Point(width-1,1),new Point(width-1,height-1),new Point(1,height-1)]);
     border.render();
@@ -60,6 +62,8 @@ function draw() {
 
     player.update();
     player.render();
+
+    if (!(frameCount % 8)) fps.html('FPS: ' + floor(frameRate()));
 }
 
 function mousePressed() {
