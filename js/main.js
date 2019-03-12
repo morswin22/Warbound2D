@@ -7,8 +7,15 @@ let assets = [];
 let textures = [];
 
 let player;
+let pointer;
+
+let placePoints = false;
 
 function preload() {
+    textures.push(loadImage('/assets/image/pointer_default.png'));
+    textures.push(loadImage('/assets/image/pointer_grab.png'));
+    textures.push(loadImage('/assets/image/pointer_grabbing.png'));
+
     assets.push(loadJSON('/assets/polygons/rect.json'));
     assets.push(loadJSON('/assets/polygons/BlueBird.json'));
     assets.push(loadJSON('/assets/polygons/birdy.json'));
@@ -39,12 +46,15 @@ function setup() {
 
     shapes.push(new Polygon(80, 80, assets[0]));
 
+    shapes.push(new Ngon(670, 470, {width: 70}, 8));
+
     // player = new Player(width/2, height*3/4, 120, new Spritesheet(textures[0], 5, 5, 3, 14), new Ngon(!!0, !!0, {width: 120}, 5), true);
     
     PlayerDetectCollisionsWith.push(shapes);
 
     // player = new Player(width/2, height*3/4, 120, new Spritesheet(textures[1], 5, 4, 2), new Ngon(!!0, !!0, {width: 120}, 6), true);
-    player = new Player(width/2, height*3/4, 120, new Spritesheet(textures[1], 5, 4, 2), new Polygon(!!0, !!0, assets[2]), true);
+    player = new Player(width/2, height*3/4, 120, new Spritesheet(textures[4], 5, 4, 2), new Polygon(!!0, !!0, assets[2]), true);
+    pointer = new Pointer([textures[0],textures[1],textures[2]]);
 }
 
 function draw() {
@@ -63,13 +73,15 @@ function draw() {
     player.update();
     player.render();
 
+    pointer.update(shapes);
+
     if (!(frameCount % 8)) fps.html('FPS: ' + floor(frameRate()));
 }
 
 function mousePressed() {
     if (mouseX < width && mouseX > 0 &&
         mouseY < height && mouseY > 0) {
-        points.push(new Point(mouseX, mouseY));
+        if (placePoints) points.push(new Point(mouseX, mouseY));
     }
   }
 

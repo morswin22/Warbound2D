@@ -13,7 +13,8 @@ function testAllCollisions(shapes) {
   }
 }
 
-function testCollision(shapeA, shapeB) {
+function testCollision(shapeA, shapeB, specialCounter) {
+  specialCounter = specialCounter || [0];
   let valueToReturn = false;
 	for (let lineA of shapeA.lines) {
     for (let lineB of shapeB.lines) {
@@ -68,6 +69,7 @@ function testCollision(shapeA, shapeB) {
             let fin_Y = finite.func.y(inf_X);
             if (inf_minY <= fin_Y && inf_maxY >= fin_Y) {
               countCollisions++;
+              specialCounter[0]++;
               if (showCollisions && showCollisionsInRange) {
                 // show that point
                 fill(80,210,80);
@@ -85,6 +87,7 @@ function testCollision(shapeA, shapeB) {
              B_minY <= y && y <= B_maxY)){
           // collision in range
         	countCollisions++;
+          specialCounter[0]++;
           if (showCollisions && showCollisionsInRange) {
             // show that point
             fill(80,210,80);
@@ -102,4 +105,11 @@ function testCollision(shapeA, shapeB) {
     }
   }
   return valueToReturn;
+}
+
+function testPointInShape(point, shapeB) {
+  let shapeA = createShape([point, new Point(Infinity, point.y)], color(80, 80, 210));
+  shapeA.render();
+  let count = [0];
+  return testCollision(shapeA, shapeB, count) && count[0] % 2 == 1;
 }
