@@ -13,9 +13,12 @@ class Pointer {
             grabbing: obj[2]
         }
         noCursor();
+        this.lastPos = [mouseX, mouseY];
     }
 
     update(clickableShapes) {
+        this.velocity = [mouseX - this.lastPos[0], mouseY - this.lastPos[1]];
+        this.lastPos = [mouseX, mouseY];
         this.hovered = [];
         if (!this.held) {
             for (let shape of clickableShapes) {
