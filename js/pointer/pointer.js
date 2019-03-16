@@ -22,21 +22,26 @@ class Pointer {
         this.hovered = [];
         if (!this.held) {
             for (let shape of clickableShapes) {
-                if (testPointInShape(new Point(mouseX, mouseY), shape)) {
+                if (shape.type == 'dynamic' && testPointInShape(new Point(mouseX, mouseY), shape)) {
                     this.hovered.push(shape);
                     if (mouseIsPressed) {
                         this.held = shape;
+                        this.held.isHeld = true;
                         this.offset = [shape.x - mouseX, shape.y - mouseY];
                     }
                 }
             }
         } else {
             if (!mouseIsPressed) {
+                this.held.isHeld = false;
                 this.held = undefined;
                 this.offset = [];
             } else {
                 this.held.x = mouseX + this.offset[0];
                 this.held.y = mouseY + this.offset[1];
+
+                this.held.vel.x = this.velocity[0];
+                this.held.vel.y = this.velocity[1];
             }
         }
         if (this.held) {

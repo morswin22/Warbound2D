@@ -31,41 +31,41 @@ function setup() {
         if (shape) shapes.push(shape);
         points = [];
     });
-    shapes.push(new Ngon(80, 200, {width:60}, 6));
-    shapes.push(new Polygon(200, 200, [new Point(50, -100), new Point(50, 25), new Point(-10, 10), new Point(-25, -50)]));
-    shapes.push(new Ngon(80, 200, {width:60}, 4));
+    shapes.push(new Ngon('dynamic', 80, 200, {width:60}, 6));
+    shapes.push(new Polygon('dynamic', 122, 480, [new Point(50, -100), new Point(50, 25), new Point(-10, 10), new Point(-25, -50)]));
+    shapes.push(new Ngon('dynamic', 80, 200, {width:60}, 4));
 
-    shapes[0].applyForce(createVector(1.5,0));
     shapes[0].setColor(color(80,220,80));
 
     p = createP();
     fps = createP();
 
-    border = new Polygon(0,0,[new Point(1,1),new Point(width-1,1),new Point(width-1,height-1),new Point(1,height-1)]);
+    border = new Polygon('static', 0,0,[new Point(1,1),new Point(width-1,1),new Point(width-1,height-1),new Point(1,height-1)]);
     border.render();
 
-    shapes.push(new Polygon(80, 80, assets[0]));
+    shapes.push(new Polygon('dynamic', 80, 80, assets[0]));
 
-    shapes.push(new Ngon(670, 470, {width: 70}, 8));
+    shapes.push(new Ngon('dynamic', 670, 470, {width: 70}, 8));
 
     // player = new Player(width/2, height*3/4, 120, new Spritesheet(textures[0], 5, 5, 3, 14), new Ngon(!!0, !!0, {width: 120}, 5), true);
     
     PlayerDetectCollisionsWith.push(shapes);
 
     // player = new Player(width/2, height*3/4, 120, new Spritesheet(textures[1], 5, 4, 2), new Ngon(!!0, !!0, {width: 120}, 6), true);
-    player = new Player(width/2, height*3/4, 120, new Spritesheet(textures[4], 5, 4, 2), new Polygon(!!0, !!0, assets[2]), true);
+    player = new Player(width/2, height*3/4, 120, new Spritesheet(textures[4], 5, 4, 2), new Polygon('dynamic', !!0, !!0, assets[2]), true);
     pointer = new Pointer([textures[0],textures[1],textures[2]]);
 }
 
 function draw() {
     background(220);
 
+    shapes[0].vel.x = 1.5;
     shapes[0].theta += cos(frameCount/25)/10;
 
     shapes[1].y += sin(frameCount/40);
 
-    drawShapes();
-    shapes[0].update();
+    updateShapes();
+    renderShapes();
 
     testAllCollisions(shapes);
     p.html('Number of collisions: ' + countCollisions);

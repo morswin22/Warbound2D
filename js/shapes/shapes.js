@@ -11,6 +11,8 @@ let ShapeColor;  // ShapeColor = color(0,0,0);
 let points = [];
 let shapes = [];
 
+let Friction = .95;
+
 class Point {
 	constructor(x,y) {
         this.x = x;
@@ -85,11 +87,119 @@ class Shape {
 }
 
 class PhysicsBody {
-    // ?
+    constructor (type, x, y) {
+        this.shapesId = shapes.length;
+        this.collisionsTestedWith = {x:[], y: []}
+
+        this.type = type;
+        this.xValue = x;
+        this.yValue = y;
+
+        this.m = 1; // mass
+
+        this.vel = {x: 0, y: 0};
+    }
+
+    update() {
+        if (this.type !== 'static' && !this.isHeld) {
+            this.x += this.vel.x;
+            this.y += this.vel.y;
+
+            this.vel.x *= Friction;
+            this.vel.y *= Friction;
+        }
+    }
+
+    bounceX(shape) {
+        if (shape.type !== 'static') {
+            return ((this.m-shape.m)/(this.m + shape.m) * this.vel.x) + ((2 * shape.m/(this.m + shape.m)) * shape.vel.x);
+        } else {
+            return -this.vel.x;
+        }
+    }
+
+    bounceY(shape) {
+        if (shape.type !== 'static') {
+            return ((this.m-shape.m)/(this.m + shape.m) * this.vel.y) + ((2 * shape.m/(this.m + shape.m)) * shape.vel.y);
+        } else {
+            return -this.vel.y;
+        }
+    }
+
+    set x(pos) {
+        if (this.type !== 'static') {
+            const d = pos - this.xValue;
+            this.xValue = pos;
+            if (!this.isPlayer && d !== 0) {
+                // test collision
+                for (let shape of shapes) {
+                    if (this.shapesId !== shape.shapesId && shape.collisionsTestedWith.x.indexOf(this.shapesId) == -1) {
+                        this.collisionsTestedWith.x.push(shape.shapesId);
+                        shape.collisionsTestedWith.x.push(this.shapesId);
+
+                        if (shape.lines && testCollision(shape, this)) {
+                            this.xValue -= d;
+                            if (shape.type !== 'static') {
+                                shape.xValue += d;
+                            } else {
+                                this.xValue -= d;
+                            }
+                            
+                            let thisVelX = this.bounceX(shape); // TODO: calculate the bounce angle
+                            let shapeVelX = shape.bounceX(this);
+    
+                            this.vel.x = thisVelX;
+                            shape.vel.x = shapeVelX;
+                        }
+                    }                    
+                }
+            }
+        }
+    }
+    get x() {
+        return this.xValue;
+    }
+
+    set y(pos) {
+        if (this.type !== 'static') {
+            const d = pos - this.yValue;
+            this.yValue = pos;
+            if (!this.isPlayer && d !== 0) {
+                // test collision
+                for (let shape of shapes) {
+                    if (this.shapesId !== shape.shapesId && shape.collisionsTestedWith.y.indexOf(this.shapesId) == -1) {
+                        this.collisionsTestedWith.y.push(shape.shapesId);
+                        shape.collisionsTestedWith.y.push(this.shapesId);
+
+                        if (shape.lines && testCollision(shape, this)) {
+                            this.yValue -= d;
+                            if (shape.type !== 'static') {
+                                shape.yValue += d;
+                            } else {
+                                this.yValue -= d;
+                            }
+                            
+                            let thisVelY = this.bounceY(shape);
+                            let shapeVelY = shape.bounceY(this);
+
+                            this.vel.y = thisVelY;
+                            shape.vel.y = shapeVelY;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    get y() {
+        return this.yValue;
+    }
+    
 }
 
-class Ngon {
-    constructor(x, y, length, n, theta) {
+class Ngon extends PhysicsBody {
+    constructor(type, x, y, length, n, theta) {
+        super(type, x, y);
+
         // length = {side: ?, width: ?}
         let a;
         if (length.side) {
@@ -116,8 +226,8 @@ class Ngon {
         }
 
         // physics
-        this.vel = createVector(0,0);
-        this.acc = createVector(0,0);
+        // this.vel = createVector(0,0);
+        // this.acc = createVector(0,0);
 
         // color update
         this.hasColor = false;
@@ -126,27 +236,27 @@ class Ngon {
         this.hasColor = color;
     }
 
-    applyForce(f) {
-        this.acc.add(f);
-    }
+    // applyForce(f) {
+    //     this.acc.add(f);
+    // }
 
-    update() {
-        let pos = createVector(this.x, this.y);
-        pos.add(this.vel);
-        this.x = pos.x; this.y = pos.y;
-        if (testCollision(this, border)) {
-            this.vel.mult(-1);
-            pos.add(this.vel);
-            pos.add(this.vel);
-            this.x = pos.x; this.y = pos.y;
+    // update() {
+    //     let pos = createVector(this.x, this.y);
+    //     pos.add(this.vel);
+    //     this.x = pos.x; this.y = pos.y;
+    //     if (testCollision(this, border)) {
+    //         this.vel.mult(-1);
+    //         pos.add(this.vel);
+    //         pos.add(this.vel);
+    //         this.x = pos.x; this.y = pos.y;
 
-            // console.log('?');
-        }
-        this.vel.add(this.acc);
-        this.acc.mult(0);
+    //         // console.log('?');
+    //     }
+    //     this.vel.add(this.acc);
+    //     this.acc.mult(0);
 
-        // console.log(this.vel.x);
-    }
+    //     // console.log(this.vel.x);
+    // }
 
     getLines() { // Refactor this later;
         let points = [];
@@ -172,10 +282,10 @@ class Ngon {
     }
 }
 
-class Polygon {
-    constructor(x,y,points) { // points are just offsets from x,y
-        this.x = x;
-        this.y = y;
+class Polygon extends PhysicsBody{
+    constructor(type, x,y,points) { // points are just offsets from x,y
+        super(type, x, y);
+
         this.points = Object.values(points); // to make sure it works
 
         this.hasColor = false;
@@ -219,16 +329,21 @@ class Polygon {
     render() {
         this.getLines().render();
     }
-
-    // todo, create funciton to reverse points locations
 }
 
-function drawShapes() {
+function renderShapes() {
     for (let point of points) {
         point.render();
     }
     for (let shape of shapes) {
         shape.render();
+    }
+}
+
+function updateShapes() {
+    for (let shape of shapes) shape.collisionsTestedWith = {x:[],y:[]};
+    for (let shape of shapes) {
+        shape.update();
     }
 }
 

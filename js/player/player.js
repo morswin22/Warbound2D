@@ -20,6 +20,8 @@ class Player {
 
         this.speed = {x:0, y:0};
         this.facingRight = facingRight || true;
+
+        this.shape.isPlayer = true;
     }
 
     update() {

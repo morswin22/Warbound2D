@@ -1,7 +1,8 @@
 (()=>{
     const param = 'file';
     const options = [
-        {name: 'Main js file', value: 'main', file: 'main.js'}
+        {name: 'Main js file', value: 'main', file: 'main.js'},
+        {name: 'Collisions Test', value: 'collisions', file: 'collisions.js'}
     ];
 
     const url = new URL(location.href);
